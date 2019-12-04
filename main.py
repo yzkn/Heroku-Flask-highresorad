@@ -3,11 +3,16 @@
 #
 # Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
 
+# 環境変数を設定しておく
+# $heroku config:set ENV=heroku
+
 import datetime
 import logging
 import os
 
 from flask import Flask, request
+
+from utility import get_rainfall
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -17,10 +22,6 @@ app = Flask(__name__)
 # const
 DEFAULT_LAT = 35.681236
 DEFAULT_LNG = 139.767125
-
-
-def get_rainfall(lat, lng):
-    return 0  # TODO
 
 
 def is_numeric(n):
