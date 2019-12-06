@@ -3,6 +3,10 @@
 #
 # Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
 
+# $py -m venv herokuenv
+# $.\herokuenv\Scripts\activate
+# $py -m pip install -r requirements.txt
+
 # 環境変数を設定しておく
 # $heroku config:set ENV=heroku
 
