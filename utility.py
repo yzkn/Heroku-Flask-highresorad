@@ -3,6 +3,7 @@
 #
 # Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
 
+from PIL import Image
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
@@ -26,6 +27,14 @@ def gen_filename(prefix, suffix):
     return prefix + now + suffix
 
 
+def get_center_pixel(filename, x, y):
+    img = Image.open(filename)
+    if img.mode != 'RGB':
+        img = img.convert('RGB')
+    r, g, b = img.getpixel((x, y))
+    return (r, g, b)
+
+
 def get_rainfall(lat, lng):
     options = Options()
     options.add_argument('--disable-geolocation')
@@ -43,22 +52,25 @@ def get_rainfall(lat, lng):
 
     # 位置情報を取得できませんでした。
     try:
-        time.sleep(5)
+        time.sleep(7)
         driver.save_screenshot(gen_filename('ss1_', '.png'))
 
         driver.find_element_by_xpath(
             '//div[contains(@id, "viewbutton_OTHER_jmamesh_highresorad")]').click()
         time.sleep(1)
+
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLat_jmamesh_highresorad")]').clear()
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLat_jmamesh_highresorad")]').send_keys('35.6864604')
         time.sleep(1)
+
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLon_jmamesh_highresorad")]').clear()
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLon_jmamesh_highresorad")]').send_keys('139.7635769')
         time.sleep(1)
+
         driver.find_element_by_xpath(
             '//button[contains(@id, "mvCenter_jmamesh_highresorad")]').click()
         time.sleep(2)
@@ -72,6 +84,11 @@ def get_rainfall(lat, lng):
                 print(e)
 
         try:
+            # 「このチェックボックスは、地図を拡大したときのみ使用することができます。」
+            driver.find_element_by_xpath(
+                '//input[contains(@id, "viewMUNICIPALITY_jmamesh_highresorad")]').click()
+            time.sleep(1)
+
             target = driver.find_element_by_class_name('jmamesh-contents')
             driver.execute_script('arguments[0].scrollIntoView(true);', target)
             time.sleep(2)
@@ -82,9 +99,15 @@ def get_rainfall(lat, lng):
             driver.find_element_by_xpath(
                 '//input[contains(@id, "viewtime_next_jmamesh_highresorad")]').click()
             time.sleep(1)
-            driver.save_screenshot(gen_filename(
-                'ss2_', '_' + '{:02}'.format(j) + '.png'))
-            time.sleep(2)
+
+            nowcast_datetime = driver.find_element_by_id('pinSvgText').text
+            filename = gen_filename('ss2_', '_' + '{:02}'.format(j) + '.png')
+            driver.save_screenshot(filename)
+            r, g, b = get_center_pixel(filename, 370, 440)
+            nowcast_rainfall = rgb2rainfall(r, g, b)
+            print('{:03} {:03} {:03} {:03} {}'.format(
+                r, g, b, nowcast_rainfall, nowcast_datetime))
+            time.sleep(1)
     except Exception as e:
         print(e)
 
@@ -95,3 +118,29 @@ def get_rainfall(lat, lng):
 
     driver.quit()
     return rainfall
+
+
+def rgb2rainfall(r, g, b):
+    if r == 0 and g == 0 and b == 0:  # 境界
+        return -1
+    if r == 171 and g == 196 and b == 160:  # 陸
+        return -1
+    if r == 184 and g == 184 and b == 230:  # 海
+        return -1
+    if r == 242 and g == 242 and b == 255:
+        return 0
+    if r == 160 and g == 210 and b == 255:
+        return 1
+    if r == 27 and g == 140 and b == 255:
+        return 5
+    if r == 0 and g == 53 and b == 255:
+        return 10
+    if r == 255 and g == 245 and b == 0:
+        return 20
+    if r == 255 and g == 153 and b == 0:
+        return 30
+    if r == 255 and g == 32 and b == 0:
+        return 50
+    if r == 180 and g == 0 and b == 104:
+        return 80
+    return -1
