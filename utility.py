@@ -52,24 +52,21 @@ def get_rainfall(lat, lng):
 
     # 位置情報を取得できませんでした。
     try:
-        time.sleep(7)
+        time.sleep(6)
         driver.save_screenshot(gen_filename('ss1_', '.png'))
 
         driver.find_element_by_xpath(
             '//div[contains(@id, "viewbutton_OTHER_jmamesh_highresorad")]').click()
-        time.sleep(1)
 
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLat_jmamesh_highresorad")]').clear()
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLat_jmamesh_highresorad")]').send_keys('35.6864604')
-        time.sleep(1)
 
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLon_jmamesh_highresorad")]').clear()
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLon_jmamesh_highresorad")]').send_keys('139.7635769')
-        time.sleep(1)
 
         driver.find_element_by_xpath(
             '//button[contains(@id, "mvCenter_jmamesh_highresorad")]').click()
@@ -79,19 +76,19 @@ def get_rainfall(lat, lng):
             try:
                 driver.find_element_by_xpath(
                     '//span[contains(@class, "ui-icon-plus")]').click()
-                time.sleep(2)
+                time.sleep(1)
             except Exception as e:
                 print(e)
+        time.sleep(4)
 
         try:
             # 「このチェックボックスは、地図を拡大したときのみ使用することができます。」
             driver.find_element_by_xpath(
                 '//input[contains(@id, "viewMUNICIPALITY_jmamesh_highresorad")]').click()
-            time.sleep(1)
 
             target = driver.find_element_by_class_name('jmamesh-contents')
             driver.execute_script('arguments[0].scrollIntoView(true);', target)
-            time.sleep(2)
+            time.sleep(1)
         except Exception as e:
             print(e)
 
