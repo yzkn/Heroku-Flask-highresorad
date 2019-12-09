@@ -52,12 +52,47 @@ def get_rainfall(lat, lng):
 
     # 位置情報を取得できませんでした。
     # try:
-    #     elem = driver.find_element_by_xpath(
-    #         '//div[contains(@aria-describedby, "messageDialog_jmamesh_highresorad")]//button[contains(@class, "ui-dialog-titlebar-close")]')
-    #     elem.click()
+    #     source = driver.page_source
+    #     print('source1')
+    #     print(source)
+    #     driver.execute_script(
+    #         "var element = document.getElementsByClassName('ui-widget-overlay ui-front')[0];if (element){element.parentNode.removeChild(element);}")
+    #     print('driver.execute_script()')
+    #     source = driver.page_source
+    #     print('source2')
+    #     print(source)
+    #     elems = driver.find_elements_by_xpath(
+    #         '//button[contains(.,"閉じる")]')
+    #     for elem in elems:
+    #         try:
+    #             if EC.element_to_be_clickable(By.ID, elem.id):
+    #                 elem.click()
+    #         except Exception as ex:
+    #             print('ex')
+    #             print(ex)
     # except Exception as e:
-    #     pass
-    # Message: invalid argument: Unsupported locator strategy: null
+    #     print('e')
+    #     print(e)
+
+    # try:
+    #     elem = driver.find_element_by_xpath('//body')
+    #     for i in range(3):
+    #         elem.send_keys(Keys.TAB)
+    #     elem.send_keys(Keys.ENTER)
+    # except Exception as e:
+    #     print('e')
+    #     print(e)
+
+    # try:
+    #     elem = driver.find_element_by_xpath('//body')
+    #     action = webdriver.common.action_chains.ActionChains(driver)
+    #     action.move_to_element_with_offset(elem, 730, 640)
+    #     action.click()
+    #     action.perform()
+    # except Exception as e:
+    #     print('e')
+    #     print(e)
+    # Message: element click intercepted: Element <div class="jmamesh-viewbutton jmamesh-hasballoon-top jmamesh-state-OTHER-close" id="viewbutton_OTHER_jmamesh_highresorad1575933900912"></div> is not clickable at point (620, 937). Other element would receive the click: <div class="ui-widget-overlay ui-front" style="z-index: 1001;"></div>
 
     try:
         time.sleep(6)
