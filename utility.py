@@ -37,7 +37,7 @@ def get_center_pixel(filename, x, y):
 
 def get_rainfall(lat, lng):
     options = Options()
-    options.add_argument('--disable-geolocation')
+    # options.add_argument('--disable-geolocation')
     # options.add_argument('--headless')
     options.add_argument('--window-size=1024,1024')
 
@@ -51,6 +51,14 @@ def get_rainfall(lat, lng):
     driver.get(NOWCAST_URL)
 
     # 位置情報を取得できませんでした。
+    # try:
+    #     elem = driver.find_element_by_xpath(
+    #         '//div[contains(@aria-describedby, "messageDialog_jmamesh_highresorad")]//button[contains(@class, "ui-dialog-titlebar-close")]')
+    #     elem.click()
+    # except Exception as e:
+    #     pass
+    # Message: invalid argument: Unsupported locator strategy: null
+
     try:
         time.sleep(6)
         driver.save_screenshot(gen_filename('ss1_', '.png'))
