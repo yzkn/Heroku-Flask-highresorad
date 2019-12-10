@@ -122,14 +122,19 @@ def get_rainfall(lat, lng):
                 '//input[contains(@id, "viewtime_next_jmamesh_highresorad")]').click()
             time.sleep(1)
 
-            nowcast_datetime = driver.find_element_by_id('pinSvgText').text
+            nowcast_datetime_str = driver.find_element_by_xpath(
+                '//div[contains(@id, "maptitletxt_jmamesh_highresorad")]').text
+            nowcast_datetime = datetime.datetime.strptime(
+                nowcast_datetime_str.replace(' (予想)', ''), '%Y年%m月%d日%H時%M分')
+            nowcast_datetime_formated = nowcast_datetime.isoformat()
+
             filename = gen_filename('ss2_', '_' + '{:02}'.format(j) + '.png')
             driver.save_screenshot(filename)
             r, g, b = get_center_pixel(filename, 370, 440)
             nowcast_rainfall = rgb2rainfall(r, g, b)
             print('{:03} {:03} {:03} {:03} {}'.format(
-                r, g, b, nowcast_rainfall, nowcast_datetime))
-            result_rainfall[nowcast_datetime] = nowcast_rainfall
+                r, g, b, nowcast_rainfall, nowcast_datetime_formated))
+            result_rainfall[nowcast_datetime_formated] = nowcast_rainfall
             time.sleep(1)
     except Exception as e:
         print(e)
