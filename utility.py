@@ -53,16 +53,17 @@ def get_rainfall(lat, lng):
     # 位置情報を取得できませんでした。
     try:
         time.sleep(7)
-        source = driver.page_source
-        print('source1')
-        print(source)
+        driver.save_screenshot(gen_filename('ss0_', '.png'))
+        # source = driver.page_source
+        # print('source1')
+        # print(source)
         driver.execute_script(
             "var element = document.getElementsByClassName('ui-widget-overlay ui-front')[0];if (element){element.parentNode.removeChild(element);}")
         time.sleep(3)
         print('driver.execute_script()')
-        source = driver.page_source
-        print('source2')
-        print(source)
+        # source = driver.page_source
+        # print('source2')
+        # print(source)
         elems = driver.find_elements_by_xpath(
             '//button[contains(.,"閉じる")]')
         for elem in elems:
@@ -115,6 +116,7 @@ def get_rainfall(lat, lng):
         except Exception as e:
             print(e)
 
+        result_rainfall = {}
         for j in range(12):
             driver.find_element_by_xpath(
                 '//input[contains(@id, "viewtime_next_jmamesh_highresorad")]').click()
@@ -127,17 +129,15 @@ def get_rainfall(lat, lng):
             nowcast_rainfall = rgb2rainfall(r, g, b)
             print('{:03} {:03} {:03} {:03} {}'.format(
                 r, g, b, nowcast_rainfall, nowcast_datetime))
+            result_rainfall[nowcast_datetime] = nowcast_rainfall
             time.sleep(1)
     except Exception as e:
         print(e)
 
     driver.save_screenshot(gen_filename('ss3_', '.png'))
 
-    # TODO
-    rainfall = 0
-
     driver.quit()
-    return rainfall
+    return result_rainfall
 
 
 def rgb2rainfall(r, g, b):

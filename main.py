@@ -11,6 +11,7 @@
 # $heroku config:set ENV=heroku
 
 import datetime
+import glob
 import logging
 import os
 
@@ -35,21 +36,26 @@ def is_numeric(n):
         return False
 
 
+def remove_glob(pathname, recursive=False):
+    # remove_glob('./*.png')
+    for p in glob.glob(pathname, recursive=recursive):
+        if os.path.isfile(p):
+            os.remove(p)
+
+
 @app.route('/nowcast', methods=['GET'])
 def get_nowcast():
+    remove_glob('./*.png')
+
     lat = request.args.get('lat', DEFAULT_LAT)
     lng = request.args.get('lng', DEFAULT_LNG)
 
     if False == is_numeric(lat) or False == is_numeric(lng):
         return '', 404
 
-    # TODO
-    rainfall = get_rainfall(lat, lng)
-
-    res = 'timestamp={}, RAINFALL={}'.format(
-        datetime.datetime.utcnow() + datetime.timedelta(hours=9), rainfall)
-    logger.info(res)
-    return res, 200
+    result_rainfall = get_rainfall(lat, lng)
+    logger.info(result_rainfall)
+    return result_rainfall, 200
 
 
 if __name__ == '__main__':
