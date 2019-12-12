@@ -76,7 +76,6 @@ def get_rainfall(lat, lng):
         print(e)
 
     try:
-        # time.sleep(6)
         driver.save_screenshot(gen_filename('ss1_', '.png'))
 
         driver.find_element_by_xpath(
@@ -85,12 +84,12 @@ def get_rainfall(lat, lng):
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLat_jmamesh_highresorad")]').clear()
         driver.find_element_by_xpath(
-            '//input[contains(@id, "textLat_jmamesh_highresorad")]').send_keys('35.6864604')
+            '//input[contains(@id, "textLat_jmamesh_highresorad")]').send_keys(lat)
 
         driver.find_element_by_xpath(
             '//input[contains(@id, "textLon_jmamesh_highresorad")]').clear()
         driver.find_element_by_xpath(
-            '//input[contains(@id, "textLon_jmamesh_highresorad")]').send_keys('139.7635769')
+            '//input[contains(@id, "textLon_jmamesh_highresorad")]').send_keys(lng)
 
         driver.find_element_by_xpath(
             '//button[contains(@id, "mvCenter_jmamesh_highresorad")]').click()
