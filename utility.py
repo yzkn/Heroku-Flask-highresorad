@@ -96,21 +96,26 @@ def get_rainfall(lat, lng):
         time.sleep(2)
 
         print('zoom start')
-        for i in range(8):
-            try:
-                driver.find_element_by_xpath(
-                    '//span[contains(@class, "ui-icon-plus")]').click()
-                time.sleep(1)
-            except Exception as e:
-                print(e)
-        time.sleep(4)
-        # try:
-        #     target = driver.find_element_by_xpath(
-        #         '//span[contains(@id, "sliderhandle_jmamesh_highresorad")]')
-        #     # TODO
-        #     time.sleep(2)
-        # except Exception as e:
-        #     print(e)
+        # for i in range(8):
+        #     try:
+        #         driver.find_element_by_xpath(
+        #             '//span[contains(@class, "ui-icon-plus")]').click()
+        #         time.sleep(1)
+        #     except Exception as e:
+        #         print(e)
+        # time.sleep(4)
+
+        try:
+            target = driver.find_element_by_xpath(
+                '//span[contains(@id, "sliderhandle_jmamesh_highresorad")]')
+            actions = ActionChains(driver)
+            actions.click_and_hold(target)
+            actions.move_by_offset(0, -140)
+            actions.release(target)
+            actions.perform()
+            time.sleep(2)
+        except Exception as e:
+            print(e)
         print('zoom end')
 
         try:
@@ -128,7 +133,7 @@ def get_rainfall(lat, lng):
         for j in range(12):
             driver.find_element_by_xpath(
                 '//input[contains(@id, "viewtime_next_jmamesh_highresorad")]').click()
-            time.sleep(1)
+            time.sleep(2)
 
             nowcast_datetime_str = driver.find_element_by_xpath(
                 '//div[contains(@id, "maptitletxt_jmamesh_highresorad")]').text
