@@ -55,7 +55,11 @@ def get_nowcast():
 
     result_rainfall = get_rainfall(lat, lng)
     logger.info(result_rainfall)
-    return result_rainfall, 200
+
+    if not result_rainfall:
+        return '', 404
+    else:
+        return result_rainfall, 200
 
 
 if __name__ == '__main__':

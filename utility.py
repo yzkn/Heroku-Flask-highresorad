@@ -95,6 +95,7 @@ def get_rainfall(lat, lng):
             '//button[contains(@id, "mvCenter_jmamesh_highresorad")]').click()
         time.sleep(2)
 
+        print('zoom start')
         for i in range(8):
             try:
                 driver.find_element_by_xpath(
@@ -103,6 +104,14 @@ def get_rainfall(lat, lng):
             except Exception as e:
                 print(e)
         time.sleep(4)
+        # try:
+        #     target = driver.find_element_by_xpath(
+        #         '//span[contains(@id, "sliderhandle_jmamesh_highresorad")]')
+        #     # TODO
+        #     time.sleep(2)
+        # except Exception as e:
+        #     print(e)
+        print('zoom end')
 
         try:
             # 「このチェックボックスは、地図を拡大したときのみ使用することができます。」
